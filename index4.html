@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тапалка на зображенні з ефектами</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-image: url('https://grizly.club/uploads/posts/2023-08/1693052108_grizly-club-p-kartinki-amogus-belii-bez-fona-4.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    #game {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    img {
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: transform 0.1s ease;
+    }
+
+    img:active {
+      transform: scale(0.9);
+    }
+
+    .effect {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      animation: pop 0.5s ease forwards;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(3);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <h1>Натисни на зображення!</h1>
+    <img id="tapImage" src="https://static.wikia.nocookie.net/babl-kvas/images/5/53/%D0%90%D0%BC%D0%BE%D0%B3%D1%83%D1%81.jpg/revision/latest/scale-to-width/360?cb=20220524184821&path-prefix=ru" alt="Зображення для натискання">
+    <p>Очки: <span id="score">0</span></p>
+  </div>
+
+  <script>
+    let score = 0;
+
+    // Функція для створення ефекту
+    function createEffect(x, y) {
+      const effect = document.createElement("div");
+      effect.className = "effect";
+      effect.style.width = "50px";
+      effect.style.height = "50px";
+      effect.style.left = `${x - 25}px`; // Центрування ефекту
+      effect.style.top = `${y - 25}px`; // Центрування ефекту
+      document.body.appendChild(effect);
+
+      // Видалення ефекту після завершення анімації
+      effect.addEventListener("animationend", () => {
+        effect.remove();
+      });
+    }
+
+    // Обробник події натискання на зображення
+    document.getElementById("tapImage").addEventListener("click", function(event) {
+      score++;
+      document.getElementById("score").textContent = score;
+
+      // Визначення позиції натискання для створення ефекту
+      const rect = event.target.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+
+      createEffect(x, y); // Створення ефекту
+    });
+  </script>
+</body>
+</html>
